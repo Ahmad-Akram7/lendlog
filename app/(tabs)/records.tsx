@@ -86,7 +86,7 @@ export default function RecordsScreen() {
           <Text
             style={[
               styles.title,
-              { color: c.text, fontFamily: 'Inter_700Bold' },
+              { color: c.text, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             Transactions
@@ -117,7 +117,7 @@ export default function RecordsScreen() {
         >
           <Feather name="search" size={16} color={c.text3} />
           <TextInput
-            placeholder="Search by name or note..."
+            placeholder="Search"
             placeholderTextColor={c.text3}
             value={search}
             onChangeText={setSearch}
@@ -139,7 +139,7 @@ export default function RecordsScreen() {
             <Text
               style={[
                 styles.summaryVal,
-                { color: c.primary, fontFamily: 'Inter_700Bold' },
+                { color: c.primary, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {fmt(summary.totalLent)}
@@ -160,7 +160,7 @@ export default function RecordsScreen() {
             <Text
               style={[
                 styles.summaryVal,
-                { color: c.danger, fontFamily: 'Inter_700Bold' },
+                { color: c.danger, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {fmt(summary.totalBorrowed)}
@@ -181,7 +181,7 @@ export default function RecordsScreen() {
             <Text
               style={[
                 styles.summaryVal,
-                { color: c.blue, fontFamily: 'Inter_700Bold' },
+                { color: c.blue, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {fmt(summary.pendingReceivable)}
@@ -222,7 +222,7 @@ export default function RecordsScreen() {
                 style={[
                   styles.chipText,
                   {
-                    color: filter === item.value ? '#000' : c.text2,
+                    color: filter === item.value ? c.primaryForeground : c.text2,
                     fontFamily: 'Inter_600SemiBold',
                   },
                 ]}
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
   },
   badgeText: { fontSize: 13 },
@@ -386,8 +386,10 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
+    minHeight: 36,
+    justifyContent: 'center',
   },
   chipText: { fontSize: 13 },
   list: { padding: 16, gap: 0 },
