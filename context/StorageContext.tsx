@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { settleAllFor as settleAllRecords, toggleSettled } from '@/lib/settlements';
 import React, {
   createContext,
   useCallback,
@@ -249,38 +250,22 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
   const markSettled = async (id: string) => {
     const today = todayStr();
     const now = new Date().toISOString();
-    const updated = recordsRef.current.map((r) => {
-      if (r.id !== id) return r;
-      const isSettling = !r.settled;
-      const paymentsSum = round2(
-        r.payments.reduce((sum, p) => sum + p.amount, 0),
-      );
-      return {
-        ...r,
-        settled: isSettling,
-        paid_amount: isSettling ? r.amount : paymentsSum,
-        settled_date: isSettling ? today : '',
-        updated: now,
-      };
-    });
+    const updated = recordsRef.current.map((record) =>
+      record.id === id
+        ? { ...toggleSettled(record, { today, createId: genId }), updated: now }
+        : record,
+    );
     await saveRecords(updated);
   };
-
-  const toggleSettled = markSettled;
 
   const settleAllFor = async (name: string) => {
     const today = todayStr();
     const now = new Date().toISOString();
-    const updated = recordsRef.current.map((r) =>
-      r.name.toLowerCase() === name.toLowerCase() && !r.settled
-        ? {
-            ...r,
-            settled: true,
-            paid_amount: r.amount,
-            settled_date: today,
-            updated: now,
-          }
-        : r,
+    const updated = settleAllRecords(recordsRef.current, name, {
+      today,
+      createId: genId,
+    }).map((record) =>
+      record.updated === now ? record : { ...record, updated: now },
     );
     await saveRecords(updated);
   };
