@@ -117,7 +117,7 @@ export default function RecordsScreen() {
         >
           <Feather name="search" size={16} color={c.text3} />
           <TextInput
-            placeholder="Search by name or note..."
+            placeholder="Search records"
             placeholderTextColor={c.text3}
             value={search}
             onChangeText={setSearch}
@@ -139,7 +139,7 @@ export default function RecordsScreen() {
             <Text
               style={[
                 styles.summaryVal,
-                { color: c.primary, fontFamily: 'Inter_700Bold' },
+                { color: c.text, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {fmt(summary.totalLent)}
@@ -160,7 +160,7 @@ export default function RecordsScreen() {
             <Text
               style={[
                 styles.summaryVal,
-                { color: c.danger, fontFamily: 'Inter_700Bold' },
+                { color: c.text, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {fmt(summary.totalBorrowed)}
@@ -181,7 +181,7 @@ export default function RecordsScreen() {
             <Text
               style={[
                 styles.summaryVal,
-                { color: c.blue, fontFamily: 'Inter_700Bold' },
+                { color: c.text, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {fmt(summary.pendingReceivable)}
@@ -349,7 +349,7 @@ export default function RecordsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingBottom: 6,
     borderBottomWidth: 1,
     gap: 10,
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   badge: {
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
   },
   badgeText: { fontSize: 13 },
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
   },
   chipText: { fontSize: 13 },
