@@ -264,8 +264,10 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     const updated = settleAllRecords(recordsRef.current, name, {
       today,
       createId: genId,
-    }).map((record) =>
-      record.updated === now ? record : { ...record, updated: now },
+    }).map((record, index) =>
+      record === recordsRef.current[index]
+        ? record
+        : { ...record, updated: now },
     );
     await saveRecords(updated);
   };
