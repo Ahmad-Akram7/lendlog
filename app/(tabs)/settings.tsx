@@ -77,13 +77,13 @@ export default function SettingsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text
-        style={[styles.title, { color: c.text, fontFamily: 'Inter_700Bold' }]}
+        style={[styles.title, { color: c.text, fontFamily: 'Inter_600SemiBold' }]}
       >
         Settings
       </Text>
 
       {/* Profile */}
-      <Section title="PROFILE" c={c}>
+      <Section title="Profile" c={c}>
         <Text
           style={[
             styles.label,
@@ -138,7 +138,7 @@ export default function SettingsScreen() {
           <Text
             style={[
               styles.primaryBtnText,
-              { color: '#000', fontFamily: 'Inter_700Bold' },
+              { color: c.primaryForeground, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             Save Profile
@@ -147,7 +147,7 @@ export default function SettingsScreen() {
       </Section>
 
       {/* Appearance */}
-      <Section title="APPEARANCE" c={c}>
+      <Section title="Appearance" c={c}>
         <View style={styles.settingRow}>
           <View>
             <Text
@@ -180,7 +180,7 @@ export default function SettingsScreen() {
       </Section>
 
       {/* Data summary */}
-      <Section title="DATA SUMMARY" c={c}>
+      <Section title="Data summary" c={c}>
         <View style={styles.dataGrid}>
           {[
             {
@@ -210,7 +210,7 @@ export default function SettingsScreen() {
               <Text
                 style={[
                   styles.dataStatValue,
-                  { color: item.color, fontFamily: 'Inter_700Bold' },
+                  { color: item.color, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {item.value}
@@ -229,7 +229,7 @@ export default function SettingsScreen() {
       </Section>
 
       {/* Danger zone */}
-      <Section title="DANGER ZONE" c={c}>
+      <Section title="Danger zone" c={c}>
         <TouchableOpacity
           style={[
             styles.dangerBtn,
@@ -269,7 +269,7 @@ export default function SettingsScreen() {
       </Section>
 
       {/* About */}
-      <Section title="ABOUT" c={c}>
+      <Section title="About" c={c}>
         <View style={styles.aboutRow}>
           <View
             style={[styles.aboutIcon, { backgroundColor: c.primary + '20' }]}
@@ -280,7 +280,7 @@ export default function SettingsScreen() {
             <Text
               style={[
                 styles.aboutName,
-                { color: c.text, fontFamily: 'Inter_700Bold' },
+                { color: c.text, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               LendLog
@@ -378,9 +378,9 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: 16, gap: 20 },
   title: { fontSize: 28 },
   section: { gap: 8 },
-  sectionTitle: { fontSize: 12, letterSpacing: 0.8 },
+  sectionTitle: { fontSize: 13 },
   sectionBody: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 12 },
-  label: { fontSize: 11, letterSpacing: 0.8 },
+  label: { fontSize: 12 },
   input: {
     height: 46,
     borderRadius: 12,
