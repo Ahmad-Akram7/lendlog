@@ -129,10 +129,10 @@ export default function PeopleScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: {
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-    borderBottomWidth: 1,
-    gap: 2,
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+    borderBottomWidth: 0,
+    gap: 4,
   },
   title: { fontSize: 28 },
   subtitle: { fontSize: 14 },
