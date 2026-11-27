@@ -49,7 +49,7 @@ export function PersonCard({ person, currency, onTap, onLongPress }: Props) {
   const handlePressIn = () => {
     try {
       Animated.timing(pressAnim, {
-        toValue: 0.9,
+        toValue: 0.98,
         duration: 80,
         useNativeDriver: true,
       }).start();
