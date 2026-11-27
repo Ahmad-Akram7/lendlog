@@ -57,7 +57,6 @@ export function RecordCard({
   const ActionBtn = ({
     icon,
     label,
-    color,
     onPress,
   }: {
     icon: string;
@@ -152,7 +151,7 @@ export function RecordCard({
                         { color: c.primary, fontFamily: 'Inter_500Medium' },
                       ]}
                     >
-                      SETTLED
+                      Settled
                     </Text>
                   </View>
                 )}
