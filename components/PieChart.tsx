@@ -133,7 +133,7 @@ export function PieChart({ lent, borrowed, currency }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 16 },
+  container: { borderRadius: 14, borderWidth: 1, padding: 16, gap: 16 },
   title: { fontSize: 15 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 20 },
   visual: { flex: 1 },
