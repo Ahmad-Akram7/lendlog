@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { addPaymentToRecord, calculatePeopleStats, calculateSummary, createLoanRecord, deletePaymentFromRecord, parseRecordDate, round2, sanitizeRestoredRecords, settleRecordsForPerson, toggleSettlementRecord } from '@/lib/records';
 import type {
   AppSettings,
   FilterType,
@@ -21,25 +22,6 @@ import type {
 const RECORDS_KEY = 'lendlog_records';
 const SETTINGS_KEY = 'lendlog_settings';
 const ONBOARDING_KEY = 'lendlog_onboarding_completed';
-
-export function round2(val: number): number {
-  return Math.round((val + Number.EPSILON) * 100) / 100;
-}
-
-function parseRecordDate(dateStr: string): Date | null {
-  if (!dateStr) return null;
-  const parts = dateStr.split('/');
-  if (parts.length === 3) {
-    const d = Number(parts[0]);
-    const m = Number(parts[1]) - 1;
-    const y = Number(parts[2]);
-    if (!isNaN(d) && !isNaN(m) && !isNaN(y)) {
-      return new Date(y, m, d);
-    }
-  }
-  const parsed = new Date(dateStr);
-  return isNaN(parsed.getTime()) ? null : parsed;
-}
 
 function genId(): string {
   return Date.now().toString() + Math.random().toString(36).substr(2, 9);
@@ -196,24 +178,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     date: string,
     dueDate: string,
   ) => {
-    const trimmedName = name.trim() || 'Unknown';
-    const validAmount = round2(Math.max(0, amount));
-    const now = new Date().toISOString();
-    const rec: Record = {
-      id: genId(),
-      type,
-      name: trimmedName,
-      amount: validAmount,
-      paid_amount: 0,
-      note,
-      date: date || todayStr(),
-      due_date: dueDate,
-      settled: false,
-      settled_date: '',
-      payments: [],
-      created: now,
-      updated: now,
-    };
+    const rec = createLoanRecord({ id: genId(), name, amount, type, note, date: date || todayStr(), dueDate, now: new Date().toISOString() });
     await saveRecords([rec, ...recordsRef.current]);
   };
 
@@ -249,41 +214,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
   const markSettled = async (id: string) => {
     const today = todayStr();
     const now = new Date().toISOString();
-    const updated = recordsRef.current.map((r) => {
-      if (r.id !== id) return r;
-      const isSettling = !r.settled;
-      const existingPayments = isSettling
-        ? r.payments
-        : r.payments.filter((payment) => payment.kind !== 'settlement');
-      const existingPaid = round2(
-        existingPayments.reduce((sum, payment) => sum + payment.amount, 0),
-      );
-      const adjustment = Math.max(0, round2(r.amount - existingPaid));
-      const payments =
-        isSettling && adjustment > 0
-          ? [
-              ...existingPayments,
-              {
-                id: genId(),
-                amount: adjustment,
-                date: today,
-                note: 'Manual settlement adjustment',
-                kind: 'settlement' as const,
-              },
-            ]
-          : existingPayments;
-      const paid_amount = round2(
-        payments.reduce((sum, payment) => sum + payment.amount, 0),
-      );
-      return {
-        ...r,
-        payments,
-        settled: isSettling,
-        paid_amount,
-        settled_date: isSettling ? today : '',
-        updated: now,
-      };
-    });
+    const updated = recordsRef.current.map((r) => r.id === id ? toggleSettlementRecord(r, today, now, genId) : r);
     await saveRecords(updated);
   };
 
@@ -292,36 +223,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
   const settleAllFor = async (name: string) => {
     const today = todayStr();
     const now = new Date().toISOString();
-    const updated = recordsRef.current.map((r) => {
-      if (r.name.toLowerCase() !== name.toLowerCase() || r.settled) return r;
-      const paidFromPayments = round2(
-        r.payments.reduce((sum, payment) => sum + payment.amount, 0),
-      );
-      const adjustment = Math.max(0, round2(r.amount - paidFromPayments));
-      const payments =
-        adjustment > 0
-          ? [
-              ...r.payments,
-              {
-                id: genId(),
-                amount: adjustment,
-                date: today,
-                note: 'Manual settlement adjustment',
-                kind: 'settlement' as const,
-              },
-            ]
-          : r.payments;
-      return {
-        ...r,
-        payments,
-        settled: true,
-        paid_amount: round2(
-          payments.reduce((sum, payment) => sum + payment.amount, 0),
-        ),
-        settled_date: today,
-        updated: now,
-      };
-    });
+    const updated = settleRecordsForPerson(recordsRef.current, name, today, now, genId);
     await saveRecords(updated);
   };
 
@@ -362,40 +264,13 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
       date: date || todayStr(),
       note: note ? note.trim() : '',
     };
-    const updated = recordsRef.current.map((r) => {
-      if (r.id !== recordId) return r;
-      const newPaid = round2(r.paid_amount + validAmount);
-      const autoSettle = newPaid >= r.amount;
-      return {
-        ...r,
-        paid_amount: newPaid,
-        payments: [...r.payments, payment],
-        settled: autoSettle ? true : r.settled,
-        settled_date: autoSettle && !r.settled ? todayStr() : r.settled_date,
-        updated: now,
-      };
-    });
+    const updated = recordsRef.current.map((r) => r.id === recordId ? addPaymentToRecord(r, payment, now) : r);
     await saveRecords(updated);
   };
 
   const deletePayment = async (recordId: string, paymentId: string) => {
     const now = new Date().toISOString();
-    const updated = recordsRef.current.map((r) => {
-      if (r.id !== recordId) return r;
-      const payments = r.payments.filter((p) => p.id !== paymentId);
-      const paid_amount = round2(
-        payments.reduce((sum, p) => sum + p.amount, 0),
-      );
-      const settled = paid_amount >= r.amount && r.amount > 0;
-      return {
-        ...r,
-        payments,
-        paid_amount,
-        settled,
-        settled_date: settled ? r.settled_date : '',
-        updated: now,
-      };
-    });
+    const updated = recordsRef.current.map((r) => r.id === recordId ? deletePaymentFromRecord(r, paymentId, now) : r);
     await saveRecords(updated);
   };
 
@@ -447,71 +322,9 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     return result;
   };
 
-  const getPeople = (): PersonStats[] => {
-    const map = new Map<string, PersonStats>();
-    for (const r of records) {
-      const key = r.name.toLowerCase();
-      if (!map.has(key)) {
-        map.set(key, {
-          name: r.name,
-          totalLent: 0,
-          totalBorrowed: 0,
-          netBalance: 0,
-          recordCount: 0,
-          records: [],
-        });
-      }
-      const p = map.get(key)!;
-      p.recordCount++;
-      p.records.push(r);
-      if (!r.settled) {
-        const remaining = round2(r.amount - r.paid_amount);
-        if (r.type === 'lent') p.totalLent = round2(p.totalLent + remaining);
-        else p.totalBorrowed = round2(p.totalBorrowed + remaining);
-      }
-    }
-    for (const p of map.values()) {
-      p.netBalance = round2(p.totalLent - p.totalBorrowed);
-    }
-    return Array.from(map.values()).sort(
-      (a, b) => Math.abs(b.netBalance) - Math.abs(a.netBalance),
-    );
-  };
+  const getPeople = (): PersonStats[] => calculatePeopleStats(records);
 
-  const getSummary = (): Summary => {
-    let totalLent = 0,
-      totalBorrowed = 0,
-      pendingReceivable = 0,
-      pendingPayable = 0;
-    let settledCount = 0;
-    for (const r of records) {
-      if (r.type === 'lent') {
-        totalLent = round2(totalLent + r.amount);
-        if (!r.settled)
-          pendingReceivable = round2(
-            pendingReceivable + (r.amount - r.paid_amount),
-          );
-      } else {
-        totalBorrowed = round2(totalBorrowed + r.amount);
-        if (!r.settled)
-          pendingPayable = round2(pendingPayable + (r.amount - r.paid_amount));
-      }
-      if (r.settled) settledCount++;
-    }
-    return {
-      totalLent,
-      totalBorrowed,
-      netBalance: round2(pendingReceivable - pendingPayable),
-      pendingReceivable,
-      pendingPayable,
-      settlementRate:
-        records.length > 0
-          ? Math.round((settledCount / records.length) * 100)
-          : 0,
-      totalRecords: records.length,
-      settledRecords: settledCount,
-    };
-  };
+  const getSummary = (): Summary => calculateSummary(records);
 
   const getMonthlyData = (): MonthlyData[] => {
     const months: MonthlyData[] = [];
@@ -553,51 +366,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
   ) => {
     if (!Array.isArray(newRecords)) return;
     const today = todayStr();
-    const sanitized: Record[] = newRecords.filter(Boolean).map((item: any) => {
-      const id = typeof item.id === 'string' && item.id ? item.id : genId();
-      const type: 'lent' | 'borrowed' =
-        item.type === 'borrowed' ? 'borrowed' : 'lent';
-      const name =
-        typeof item.name === 'string' && item.name.trim()
-          ? item.name.trim()
-          : 'Unknown';
-      const amount = round2(Math.max(0, Number(item.amount) || 0));
-      const payments: Payment[] = Array.isArray(item.payments)
-        ? item.payments.map((p: any) => ({
-            id: typeof p.id === 'string' && p.id ? p.id : genId(),
-            amount: round2(Math.max(0, Number(p.amount) || 0)),
-            date: typeof p.date === 'string' ? p.date : today,
-            note: typeof p.note === 'string' ? p.note : '',
-          }))
-        : [];
-      const paymentsSum = round2(payments.reduce((s, p) => s + p.amount, 0));
-      const paid_amount = round2(
-        Math.max(paymentsSum, Number(item.paid_amount) || 0),
-      );
-      const settled =
-        Boolean(item.settled) || (amount > 0 && paid_amount >= amount);
-      return {
-        id,
-        type,
-        name,
-        amount,
-        paid_amount,
-        note: typeof item.note === 'string' ? item.note : '',
-        date: typeof item.date === 'string' ? item.date : today,
-        due_date: typeof item.due_date === 'string' ? item.due_date : '',
-        settled,
-        settled_date: item.settled_date || (settled ? today : ''),
-        payments,
-        created:
-          typeof item.created === 'string'
-            ? item.created
-            : new Date().toISOString(),
-        updated:
-          typeof item.updated === 'string'
-            ? item.updated
-            : new Date().toISOString(),
-      };
-    });
+    const sanitized = sanitizeRestoredRecords(newRecords, { today, now: new Date().toISOString(), genId });
     await saveRecords(sanitized);
     if (newSettings && typeof newSettings === 'object') {
       await saveSettings({ ...newSettings, hasCompletedOnboarding: true });

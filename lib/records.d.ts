@@ -1,0 +1,11 @@
+import type { Record as LoanRecord, Payment, Summary, PersonStats } from '../types';
+export function round2(value:number):number;
+export function parseRecordDate(value:string):Date|null;
+export function createLoanRecord(args:{id:string;name:string;amount:number;type:'lent'|'borrowed';note?:string;date:string;dueDate?:string;now?:string}):LoanRecord;
+export function addPaymentToRecord(record:LoanRecord,payment:Payment,now:string):LoanRecord;
+export function deletePaymentFromRecord(record:LoanRecord,paymentId:string,now:string):LoanRecord;
+export function toggleSettlementRecord(record:LoanRecord,today:string,now:string,genId:()=>string):LoanRecord;
+export function settleRecordsForPerson(records:LoanRecord[],name:string,today:string,now:string,genId:()=>string):LoanRecord[];
+export function calculateSummary(records:LoanRecord[]):Summary;
+export function calculatePeopleStats(records:LoanRecord[]):PersonStats[];
+export function sanitizeRestoredRecords(records:unknown[],options:{today:string;now:string;genId:()=>string}):LoanRecord[];
