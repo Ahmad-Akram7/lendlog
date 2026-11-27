@@ -84,12 +84,16 @@ export function RecordCard({
       } catch {}
     };
 
+    const actionColor = label === 'Settle' ? c.primary : c.text2;
+
     return (
       <TouchableOpacity
-        activeOpacity={1}
+        activeOpacity={0.75}
+        accessibilityRole="button"
+        accessibilityLabel={label}
         style={[
           styles.actionBtn,
-          { backgroundColor: color + '15', borderColor: color + '30' },
+          { backgroundColor: c.card2, borderColor: c.border },
         ]}
         onPress={() => {
           tapFade();
@@ -98,11 +102,11 @@ export function RecordCard({
         }}
       >
         <Animated.View style={[styles.actionBtnInner, { opacity: pressAnim }]}>
-          <Feather name={icon as any} size={13} color={color} />
+          <Feather name={icon as any} size={14} color={actionColor} />
           <Text
             style={[
               styles.actionText,
-              { color, fontFamily: 'Inter_600SemiBold' },
+              { color: actionColor, fontFamily: 'Inter_500Medium' },
             ]}
           >
             {label}
@@ -198,7 +202,7 @@ export function RecordCard({
                     { color: accentColor, fontFamily: 'Inter_600SemiBold' },
                   ]}
                 >
-                  {record.type === 'lent' ? 'I LENT' : 'I BORROWED'}
+                  {record.type === 'lent' ? 'Lent' : 'Borrowed'}
                 </Text>
               </View>
               <Text
@@ -299,18 +303,13 @@ export function RecordCard({
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    borderRadius: 18,
+    borderRadius: 14,
     borderWidth: 1,
     marginBottom: 10,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 9,
-    elevation: 1,
     overflow: 'hidden',
   },
-  accent: { width: 4 },
-  body: { flex: 1, padding: 14, gap: 6 },
+  accent: { width: 3 },
+  body: { flex: 1, padding: 16, gap: 8 },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -343,20 +342,21 @@ const styles = StyleSheet.create({
   progressLabel: { fontSize: 11 },
   progressBar: { height: 4, borderRadius: 2, overflow: 'hidden' },
   progressFill: { height: 4, borderRadius: 2 },
-  actions: { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 2 },
+  actions: { flexDirection: 'row', gap: 8, flexWrap: 'wrap', marginTop: 4 },
   actionBtn: {
+    minHeight: 36,
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 9,
     borderWidth: 1,
     overflow: 'hidden',
   },
   actionBtnInner: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    gap: 6,
+    paddingHorizontal: 11,
+    paddingVertical: 7,
   },
   actionText: { fontSize: 12 },
 });
