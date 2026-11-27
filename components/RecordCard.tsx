@@ -89,7 +89,7 @@ export function RecordCard({
         activeOpacity={1}
         style={[
           styles.actionBtn,
-          { backgroundColor: color + '15', borderColor: color + '30' },
+          { backgroundColor: c.card2, borderColor: c.border },
         ]}
         onPress={() => {
           tapFade();
@@ -139,8 +139,8 @@ export function RecordCard({
                     style={[
                       styles.badge,
                       {
-                        backgroundColor: c.primary + '22',
-                        borderColor: c.primary + '44',
+                        backgroundColor: c.card2,
+                        borderColor: c.border,
                       },
                     ]}
                   >
@@ -159,8 +159,8 @@ export function RecordCard({
                     style={[
                       styles.badge,
                       {
-                        backgroundColor: c.orange + '22',
-                        borderColor: c.orange + '44',
+                        backgroundColor: c.card2,
+                        borderColor: c.border,
                       },
                     ]}
                   >
@@ -178,7 +178,7 @@ export function RecordCard({
               <Text
                 style={[
                   styles.amount,
-                  { color: accentColor, fontFamily: 'Inter_700Bold' },
+                  { color: c.text2, fontFamily: 'Inter_500Medium' },
                 ]}
               >
                 {fmt(record.amount, currency)}
@@ -195,7 +195,7 @@ export function RecordCard({
                 <Text
                   style={[
                     styles.typeText,
-                    { color: accentColor, fontFamily: 'Inter_600SemiBold' },
+                    { color: c.text2, fontFamily: 'Inter_500Medium' },
                   ]}
                 >
                   {record.type === 'lent' ? 'I LENT' : 'I BORROWED'}
@@ -299,18 +299,13 @@ export function RecordCard({
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    borderRadius: 18,
+    borderRadius: 14,
     borderWidth: 1,
-    marginBottom: 10,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 9,
-    elevation: 1,
+    marginBottom: 8,
     overflow: 'hidden',
   },
   accent: { width: 4 },
-  body: { flex: 1, padding: 14, gap: 6 },
+  body: { flex: 1, padding: 16, gap: 8 },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -328,7 +323,7 @@ const styles = StyleSheet.create({
   amount: { fontSize: 18 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   typeTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
-  typeText: { fontSize: 10, letterSpacing: 0.5 },
+  typeText: { fontSize: 12 },
   date: { fontSize: 12 },
   note: { fontSize: 13, lineHeight: 18 },
   badge: {
@@ -337,13 +332,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
   },
-  badgeText: { fontSize: 9, letterSpacing: 0.5 },
+  badgeText: { fontSize: 11 },
   progressSection: { gap: 4 },
   progressRow: { flexDirection: 'row', justifyContent: 'space-between' },
   progressLabel: { fontSize: 11 },
   progressBar: { height: 4, borderRadius: 2, overflow: 'hidden' },
   progressFill: { height: 4, borderRadius: 2 },
-  actions: { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 2 },
+  actions: { flexDirection: 'row', gap: 8, flexWrap: 'wrap', marginTop: 4 },
   actionBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -355,8 +350,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
   },
   actionText: { fontSize: 12 },
 });
