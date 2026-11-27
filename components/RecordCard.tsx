@@ -66,7 +66,8 @@ export function RecordCard({
     onPress: () => void;
   }) => {
     const pressAnim = useRef(new Animated.Value(1)).current;
-    const actionColor = label === 'Settle' || label === 'Unsettle' ? c.primary : c.text2;
+    const actionColor =
+      label === 'Settle' || label === 'Unsettle' ? c.primary : c.text2;
 
     const tapFade = () => {
       try {
@@ -303,7 +304,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
     marginBottom: 10,
-    
+
     overflow: 'hidden',
   },
   accent: { width: 4 },
