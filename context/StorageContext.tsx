@@ -182,9 +182,9 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     recordsRef.current = nextRecords;
     setRecords(nextRecords);
     const snapshot = JSON.stringify(nextRecords);
-    writeQueueRef.current = writeQueueRef.current.then(() =>
-      AsyncStorage.setItem(RECORDS_KEY, snapshot),
-    );
+    writeQueueRef.current = writeQueueRef.current
+      .catch(() => undefined)
+      .then(() => AsyncStorage.setItem(RECORDS_KEY, snapshot));
     await writeQueueRef.current;
   };
 
@@ -287,7 +287,9 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
 
   const deleteAllFor = async (name: string) => {
     await saveRecords(
-      recordsRef.current.filter((r) => r.name.toLowerCase() !== name.toLowerCase()),
+      recordsRef.current.filter(
+        (r) => r.name.toLowerCase() !== name.toLowerCase(),
+      ),
     );
   };
 
