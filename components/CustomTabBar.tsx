@@ -50,7 +50,7 @@ export function CustomTabBar({ state, navigation }: Props) {
             key={tab.name}
             style={styles.tab}
             activeOpacity={0.75}
-            accessibilityRole="button"
+            accessibilityRole="tab"
             accessibilityState={{ selected: isActive }}
             accessibilityLabel={tab.label}
             onPress={() => {
