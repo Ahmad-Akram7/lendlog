@@ -95,9 +95,9 @@ export function PersonCard({ person, currency, onTap, onLongPress }: Props) {
             style={[
               styles.avatar,
               {
-                backgroundColor: avatarColor + '20',
-                borderColor: avatarColor + '40',
-                borderWidth: 1.5,
+                backgroundColor: c.card2,
+                borderColor: c.border,
+                borderWidth: 1,
               },
             ]}
           >
@@ -170,14 +170,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 14,
-    borderRadius: 18,
+    borderRadius: 14,
     borderWidth: 1,
-    marginBottom: 10,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 9,
-    elevation: 1,
+    marginBottom: 8,
     gap: 12,
   },
   avatar: {
