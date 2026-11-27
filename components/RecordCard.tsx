@@ -167,7 +167,7 @@ export function RecordCard({
                     <Text
                       style={[
                         styles.badgeText,
-                        { color: c.orange, fontFamily: 'Inter_500Medium' },
+                        { color: c.text2, fontFamily: 'Inter_500Medium' },
                       ]}
                     >
                       Due {record.due_date}
@@ -178,7 +178,7 @@ export function RecordCard({
               <Text
                 style={[
                   styles.amount,
-                  { color: c.text2, fontFamily: 'Inter_500Medium' },
+                  { color: c.text, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {fmt(record.amount, currency)}
@@ -189,7 +189,7 @@ export function RecordCard({
               <View
                 style={[
                   styles.typeTag,
-                  { backgroundColor: accentColor + '20' },
+                  { backgroundColor: c.card2 },
                 ]}
               >
                 <Text
@@ -198,7 +198,7 @@ export function RecordCard({
                     { color: c.text2, fontFamily: 'Inter_500Medium' },
                   ]}
                 >
-                  {record.type === 'lent' ? 'I LENT' : 'I BORROWED'}
+                  {record.type === 'lent' ? 'Lent' : 'Borrowed'}
                 </Text>
               </View>
               <Text
@@ -277,7 +277,7 @@ export function RecordCard({
               <ActionBtn
                 icon="edit-2"
                 label="Edit"
-                color={c.orange}
+                color={c.text2}
                 onPress={() => onEdit(record)}
               />
               {onDelete && (
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   name: { fontSize: 16 },
   amount: { fontSize: 18 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  typeTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
+  typeTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6 },
   typeText: { fontSize: 12 },
   date: { fontSize: 12 },
   note: { fontSize: 13, lineHeight: 18 },
