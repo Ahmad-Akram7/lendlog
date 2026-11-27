@@ -136,20 +136,32 @@ export function CustomTabBar({ state, navigation }: Props) {
         >
           {tabs}
         </GlassView>
-      ) : (
+      ) : Platform.OS === 'ios' ? (
         <BlurView
-          intensity={Platform.OS === 'web' ? 45 : 72}
+          intensity={55}
           tint={theme === 'dark' ? 'dark' : 'light'}
           style={[
             styles.bar,
             {
-              backgroundColor: c.nav + 'B8',
-              borderColor: c.border + 'CC',
+              backgroundColor: c.nav + '55',
+              borderColor: c.border + '99',
             },
           ]}
         >
           {tabs}
         </BlurView>
+      ) : (
+        <View
+          style={[
+            styles.bar,
+            {
+              backgroundColor: c.card + 'F2',
+              borderColor: c.border,
+            },
+          ]}
+        >
+          {tabs}
+        </View>
       )}
     </View>
   );
