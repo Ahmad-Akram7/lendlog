@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import type {
@@ -103,6 +104,8 @@ const StorageContext = createContext<StorageContextType | null>(null);
 
 export function StorageProvider({ children }: { children: React.ReactNode }) {
   const [records, setRecords] = useState<Record[]>([]);
+  const recordsRef = useRef<Record[]>([]);
+  const writeQueueRef = useRef<Promise<void>>(Promise.resolve());
   const [settings, setSettings] = useState<AppSettings>({
     currency: 'Rs.',
     theme: 'dark',
@@ -130,6 +133,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
         } catch {
           loadedRecords = [];
         }
+        recordsRef.current = loadedRecords;
         setRecords(loadedRecords);
       }
       if (sRaw) {
@@ -172,9 +176,16 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     loadData();
   }, [loadData]);
 
-  const saveRecords = async (r: Record[]) => {
-    setRecords(r);
-    await AsyncStorage.setItem(RECORDS_KEY, JSON.stringify(r));
+  // Update the in-memory source of truth synchronously before awaiting storage.
+  // This prevents two rapid mutations from calculating against the same render snapshot.
+  const saveRecords = async (nextRecords: Record[]) => {
+    recordsRef.current = nextRecords;
+    setRecords(nextRecords);
+    const snapshot = JSON.stringify(nextRecords);
+    writeQueueRef.current = writeQueueRef.current
+      .catch(() => undefined)
+      .then(() => AsyncStorage.setItem(RECORDS_KEY, snapshot));
+    await writeQueueRef.current;
   };
 
   const createRecord = async (
@@ -203,12 +214,12 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
       created: now,
       updated: now,
     };
-    await saveRecords([rec, ...records]);
+    await saveRecords([rec, ...recordsRef.current]);
   };
 
   const updateRecord = async (id: string, data: Partial<Record>) => {
     const now = new Date().toISOString();
-    const updated = records.map((r) => {
+    const updated = recordsRef.current.map((r) => {
       if (r.id !== id) return r;
       const nextAmount =
         data.amount !== undefined ? round2(Math.max(0, data.amount)) : r.amount;
@@ -232,13 +243,13 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const deleteRecord = async (id: string) => {
-    await saveRecords(records.filter((r) => r.id !== id));
+    await saveRecords(recordsRef.current.filter((r) => r.id !== id));
   };
 
   const markSettled = async (id: string) => {
     const today = todayStr();
     const now = new Date().toISOString();
-    const updated = records.map((r) => {
+    const updated = recordsRef.current.map((r) => {
       if (r.id !== id) return r;
       const isSettling = !r.settled;
       const paymentsSum = round2(
@@ -260,7 +271,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
   const settleAllFor = async (name: string) => {
     const today = todayStr();
     const now = new Date().toISOString();
-    const updated = records.map((r) =>
+    const updated = recordsRef.current.map((r) =>
       r.name.toLowerCase() === name.toLowerCase() && !r.settled
         ? {
             ...r,
@@ -276,7 +287,9 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
 
   const deleteAllFor = async (name: string) => {
     await saveRecords(
-      records.filter((r) => r.name.toLowerCase() !== name.toLowerCase()),
+      recordsRef.current.filter(
+        (r) => r.name.toLowerCase() !== name.toLowerCase(),
+      ),
     );
   };
 
@@ -284,7 +297,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
     const trimmed = newName.trim();
     if (!trimmed) return;
     const now = new Date().toISOString();
-    const updated = records.map((r) =>
+    const updated = recordsRef.current.map((r) =>
       r.name.toLowerCase() === oldName.toLowerCase()
         ? { ...r, name: trimmed, updated: now }
         : r,
@@ -309,7 +322,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
       date: date || todayStr(),
       note: note ? note.trim() : '',
     };
-    const updated = records.map((r) => {
+    const updated = recordsRef.current.map((r) => {
       if (r.id !== recordId) return r;
       const newPaid = round2(r.paid_amount + validAmount);
       const autoSettle = newPaid >= r.amount;
@@ -327,7 +340,7 @@ export function StorageProvider({ children }: { children: React.ReactNode }) {
 
   const deletePayment = async (recordId: string, paymentId: string) => {
     const now = new Date().toISOString();
-    const updated = records.map((r) => {
+    const updated = recordsRef.current.map((r) => {
       if (r.id !== recordId) return r;
       const payments = r.payments.filter((p) => p.id !== paymentId);
       const paid_amount = round2(
