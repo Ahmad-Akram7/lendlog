@@ -47,7 +47,7 @@ export default function AnalyticsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text
-        style={[styles.title, { color: c.text, fontFamily: 'Inter_700Bold' }]}
+        style={[styles.title, { color: c.text, fontFamily: 'Inter_600SemiBold' }]}
       >
         Analytics
       </Text>
@@ -97,7 +97,7 @@ export default function AnalyticsScreen() {
           <Text
             style={[
               styles.settlementPct,
-              { color: c.primary, fontFamily: 'Inter_700Bold' },
+              { color: c.primary, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             {summary.settlementRate}%
@@ -140,7 +140,7 @@ export default function AnalyticsScreen() {
           <Text
             style={[
               styles.sectionTitle,
-              { color: c.text, fontFamily: 'Inter_700Bold' },
+              { color: c.text, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             Top Debtors
@@ -167,7 +167,7 @@ export default function AnalyticsScreen() {
                 <Text
                   style={[
                     styles.rankNumText,
-                    { color: c.primary, fontFamily: 'Inter_700Bold' },
+                    { color: c.primary, fontFamily: 'Inter_600SemiBold' },
                   ]}
                 >
                   {i + 1}
@@ -194,7 +194,7 @@ export default function AnalyticsScreen() {
               <Text
                 style={[
                   styles.rankAmt,
-                  { color: c.primary, fontFamily: 'Inter_700Bold' },
+                  { color: c.primary, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {fmt(p.netBalance, currency)}
@@ -210,7 +210,7 @@ export default function AnalyticsScreen() {
           <Text
             style={[
               styles.sectionTitle,
-              { color: c.text, fontFamily: 'Inter_700Bold' },
+              { color: c.text, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             Top Creditors
@@ -237,7 +237,7 @@ export default function AnalyticsScreen() {
                 <Text
                   style={[
                     styles.rankNumText,
-                    { color: c.danger, fontFamily: 'Inter_700Bold' },
+                    { color: c.danger, fontFamily: 'Inter_600SemiBold' },
                   ]}
                 >
                   {i + 1}
@@ -264,7 +264,7 @@ export default function AnalyticsScreen() {
               <Text
                 style={[
                   styles.rankAmt,
-                  { color: c.danger, fontFamily: 'Inter_700Bold' },
+                  { color: c.danger, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {fmt(Math.abs(p.netBalance), currency)}
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
   content: { paddingHorizontal: 16, gap: 14 },
   title: { fontSize: 28 },
   statsRow: { flexDirection: 'row', gap: 10 },
-  settlementCard: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 10 },
+  settlementCard: { borderRadius: 14, borderWidth: 1, padding: 16, gap: 10 },
   settlementHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 14,
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
     gap: 12,
     marginBottom: 6,
