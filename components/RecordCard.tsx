@@ -3,6 +3,7 @@ import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -116,7 +117,8 @@ export function RecordCard({
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
-      <View
+      <Pressable style={({ pressed }) => ({ opacity: pressed ? 0.92 : 1 })}>
+        <View
           style={[
             styles.card,
             { backgroundColor: c.card, borderColor: c.border },
@@ -291,7 +293,8 @@ export function RecordCard({
               )}
             </View>
           </View>
-      </View>
+        </View>
+      </Pressable>
     </Animated.View>
   );
 }
