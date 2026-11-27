@@ -307,19 +307,19 @@ export default function HomeScreen() {
             <StatCard
               title="To receive"
               value={fmt(summary.pendingReceivable, currency)}
-              color={c.blue}
+              color={c.text}
               subtitle="pending"
             />
             <StatCard
               title="To repay"
               value={fmt(summary.pendingPayable, currency)}
-              color={c.orange}
+              color={c.text}
               subtitle="pending"
             />
           </View>
         </View>
 
-        {/* Recent Activity */}
+        {/* Recent transactions */}
         <Text
           style={[
             styles.sectionTitle,
@@ -438,7 +438,7 @@ export default function HomeScreen() {
               style={[styles.fabMenuBtn, { backgroundColor: c.primary }]}
               onPress={() => openAdd('lent')}
             >
-              <Feather name="arrow-up-right" size={18} color="#000" />
+              <Feather name="arrow-up-right" size={18} color={c.primaryForeground} />
               <Text
                 style={[
                   styles.fabMenuText,
