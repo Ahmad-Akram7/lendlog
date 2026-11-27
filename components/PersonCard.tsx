@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderWidth: 1,
     marginBottom: 10,
-    
+
     gap: 12,
   },
   avatar: {
