@@ -49,7 +49,7 @@ export function PersonCard({ person, currency, onTap, onLongPress }: Props) {
   const handlePressIn = () => {
     try {
       Animated.timing(pressAnim, {
-        toValue: 0.9,
+        toValue: 0.97,
         duration: 80,
         useNativeDriver: true,
       }).start();
@@ -95,16 +95,16 @@ export function PersonCard({ person, currency, onTap, onLongPress }: Props) {
             style={[
               styles.avatar,
               {
-                backgroundColor: avatarColor + '20',
-                borderColor: avatarColor + '40',
-                borderWidth: 1.5,
+                backgroundColor: c.card2,
+                borderColor: c.border,
+                borderWidth: 1,
               },
             ]}
           >
             <Text
               style={[
                 styles.initial,
-                { color: avatarColor, fontFamily: 'Inter_700Bold' },
+                { color: avatarColor, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {initial}
@@ -133,7 +133,7 @@ export function PersonCard({ person, currency, onTap, onLongPress }: Props) {
             <Text
               style={[
                 styles.balance,
-                { color: netColor, fontFamily: 'Inter_700Bold' },
+                { color: netColor, fontFamily: 'Inter_600SemiBold' },
               ]}
             >
               {person.netBalance === 0
@@ -169,10 +169,10 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 14,
+    padding: 16,
     borderRadius: 18,
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 8,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.04,
