@@ -36,10 +36,7 @@ export function CustomTabBar({ state, navigation }: Props) {
         {
           backgroundColor: c.background,
           borderTopColor: c.border,
-          paddingBottom: Math.max(
-            insets.bottom,
-            Platform.OS === 'web' ? 8 : 6,
-          ),
+          paddingBottom: Math.max(insets.bottom, Platform.OS === 'web' ? 8 : 6),
         },
       ]}
     >
