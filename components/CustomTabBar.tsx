@@ -1,20 +1,9 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { BlurView } from 'expo-blur';
-import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
-import React, { useRef } from 'react';
-import {
-  Animated,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React from 'react';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { useColors } from '@/hooks/useColors';
-import { useThemeContext } from '@/context/ThemeContext';
 
 const TABS = [
   { name: 'index', label: 'Home', icon: 'home' },
@@ -29,162 +18,74 @@ interface Props {
   navigation: { navigate: (name: string) => void };
 }
 
-function TabItem({
-  tab,
-  isActive,
-  onPress,
-}: {
-  tab: (typeof TABS)[number];
-  isActive: boolean;
-  onPress: () => void;
-}) {
-  const c = useColors();
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-
-  const tapFade = () => {
-    Animated.sequence([
-      Animated.timing(fadeAnim, {
-        toValue: 0.55,
-        duration: 65,
-        useNativeDriver: true,
-      }),
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 150,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
-
-  return (
-    <TouchableOpacity
-      style={styles.tab}
-      activeOpacity={0.8}
-      accessibilityRole="button"
-      accessibilityState={{ selected: isActive }}
-      accessibilityLabel={tab.label}
-      onPress={() => {
-        tapFade();
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        onPress();
-      }}
-    >
-      <Animated.View
-        style={[
-          styles.tabInner,
-          isActive && { backgroundColor: c.primary + '18' },
-          { opacity: fadeAnim },
-        ]}
-      >
-        <Feather
-          name={tab.icon}
-          size={20}
-          color={isActive ? c.primary : c.text3}
-        />
-        <Text
-          style={[
-            styles.label,
-            {
-              color: isActive ? c.primary : c.text3,
-              fontFamily: isActive ? 'Inter_600SemiBold' : 'Inter_500Medium',
-            },
-          ]}
-        >
-          {tab.label}
-        </Text>
-      </Animated.View>
-    </TouchableOpacity>
-  );
-}
-
 export function CustomTabBar({ state, navigation }: Props) {
   const c = useColors();
-  const { theme } = useThemeContext();
   const insets = useSafeAreaInsets();
   const currentName = state.routes[state.index]?.name;
-  const bottomPad = Math.max(insets.bottom, 8);
-  const useNativeGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
-  const tabs = TABS.map((tab) => (
-    <TabItem
-      key={tab.name}
-      tab={tab}
-      isActive={currentName === tab.name}
-      onPress={() => navigation.navigate(tab.name)}
-    />
-  ));
 
   return (
     <View
       style={[
         styles.container,
-        { paddingBottom: bottomPad, backgroundColor: 'transparent' },
+        {
+          backgroundColor: c.background,
+          borderTopColor: c.border,
+          paddingBottom: Math.max(insets.bottom, Platform.OS === 'web' ? 8 : 6),
+        },
       ]}
     >
-      {useNativeGlass ? (
-        <GlassView
-          colorScheme={theme}
-          glassEffectStyle="regular"
-          isInteractive
-          tintColor={c.nav + '40'}
-          style={[
-            styles.bar,
-            {
-              backgroundColor: 'transparent',
-              borderColor: c.border + 'CC',
-            },
-          ]}
-        >
-          {tabs}
-        </GlassView>
-      ) : Platform.OS === 'ios' ? (
-        <BlurView
-          intensity={55}
-          tint={theme === 'dark' ? 'dark' : 'light'}
-          style={[
-            styles.bar,
-            {
-              backgroundColor: c.nav + '55',
-              borderColor: c.border + '99',
-            },
-          ]}
-        >
-          {tabs}
-        </BlurView>
-      ) : (
-        <View
-          style={[
-            styles.bar,
-            {
-              backgroundColor: c.card + 'F2',
-              borderColor: c.border,
-            },
-          ]}
-        >
-          {tabs}
-        </View>
-      )}
+      {TABS.map((tab) => {
+        const isActive = currentName === tab.name;
+        return (
+          <TouchableOpacity
+            key={tab.name}
+            style={styles.tab}
+            activeOpacity={0.75}
+            accessibilityRole="button"
+            accessibilityState={{ selected: isActive }}
+            accessibilityLabel={tab.label}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              navigation.navigate(tab.name);
+            }}
+          >
+            <View
+              style={[
+                styles.tabInner,
+                isActive && { backgroundColor: c.card2 },
+              ]}
+            >
+              <Feather
+                name={tab.icon}
+                size={19}
+                color={isActive ? c.primary : c.text3}
+              />
+              <Text
+                style={[
+                  styles.label,
+                  {
+                    color: isActive ? c.text : c.text3,
+                    fontFamily: isActive ? 'Inter_600SemiBold' : 'Inter_500Medium',
+                  },
+                ]}
+              >
+                {tab.label}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 14,
-    paddingTop: 7,
-  },
-  bar: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 28,
-    paddingHorizontal: 5,
-    paddingVertical: 6,
-    overflow: 'hidden',
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 8,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: 8,
+    paddingTop: 7,
   },
   tab: {
     flex: 1,
@@ -193,16 +94,17 @@ const styles = StyleSheet.create({
     minHeight: 48,
   },
   tabInner: {
-    minWidth: 54,
+    minWidth: 56,
+    minHeight: 44,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 9,
-    paddingVertical: 6,
-    borderRadius: 18,
+    paddingVertical: 5,
+    borderRadius: 12,
     gap: 3,
   },
   label: {
-    fontSize: 10,
-    letterSpacing: 0.1,
+    fontSize: 11,
+    lineHeight: 14,
   },
 });
