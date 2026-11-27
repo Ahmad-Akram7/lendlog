@@ -82,7 +82,10 @@ test('settle all creates one adjustment per pending record for the selected pers
 
   const result = settleAllFor(records, 'sam', options());
 
-  assert.deepEqual(result.map((item) => item.settled), [true, true, false, true]);
+  assert.deepEqual(
+    result.map((item) => item.settled),
+    [true, true, false, true],
+  );
   assert.equal(result[0].payments.at(-1).amount, 70);
   assert.equal(result[1].payments.at(-1).amount, 50);
   assert.equal(result[2], records[2]);

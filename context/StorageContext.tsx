@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { settleAllFor as settleAllRecords, toggleSettled } from '@/lib/settlements';
+import {
+  settleAllFor as settleAllRecords,
+  toggleSettled,
+} from '@/lib/settlements';
 import React, {
   createContext,
   useCallback,
