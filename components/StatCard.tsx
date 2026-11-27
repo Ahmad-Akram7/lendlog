@@ -9,7 +9,7 @@ interface Props {
   subtitle?: string;
 }
 
-export function StatCard({ title, value, color, subtitle }: Props) {
+export function StatCard({ title, value, subtitle }: Props) {
   const c = useColors();
   const valueColor = c.text;
   return (
