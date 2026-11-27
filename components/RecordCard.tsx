@@ -39,7 +39,7 @@ export function RecordCard({
 }: Props) {
   const c = useColors();
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const accentColor = record.type === 'lent' ? c.primary : c.danger;
+  const accentColor = record.type === 'lent' ? c.primary : c.text2;
   const remaining = record.amount - record.paid_amount;
   const progressPct =
     record.amount > 0 ? Math.min(record.paid_amount / record.amount, 1) : 0;
@@ -57,7 +57,6 @@ export function RecordCard({
   const ActionBtn = ({
     icon,
     label,
-    color,
     onPress,
   }: {
     icon: string;
@@ -66,6 +65,8 @@ export function RecordCard({
     onPress: () => void;
   }) => {
     const pressAnim = useRef(new Animated.Value(1)).current;
+    const actionColor =
+      label === 'Settle' || label === 'Unsettle' ? c.primary : c.text2;
 
     const tapFade = () => {
       try {
@@ -89,7 +90,7 @@ export function RecordCard({
         activeOpacity={1}
         style={[
           styles.actionBtn,
-          { backgroundColor: color + '15', borderColor: color + '30' },
+          { backgroundColor: c.card2, borderColor: c.border },
         ]}
         onPress={() => {
           tapFade();
@@ -98,11 +99,11 @@ export function RecordCard({
         }}
       >
         <Animated.View style={[styles.actionBtnInner, { opacity: pressAnim }]}>
-          <Feather name={icon as any} size={13} color={color} />
+          <Feather name={icon as any} size={14} color={actionColor} />
           <Text
             style={[
               styles.actionText,
-              { color, fontFamily: 'Inter_600SemiBold' },
+              { color: actionColor, fontFamily: 'Inter_500Medium' },
             ]}
           >
             {label}
@@ -147,10 +148,10 @@ export function RecordCard({
                     <Text
                       style={[
                         styles.badgeText,
-                        { color: c.primary, fontFamily: 'Inter_600SemiBold' },
+                        { color: c.primary, fontFamily: 'Inter_500Medium' },
                       ]}
                     >
-                      SETTLED
+                      Settled
                     </Text>
                   </View>
                 )}
@@ -167,7 +168,7 @@ export function RecordCard({
                     <Text
                       style={[
                         styles.badgeText,
-                        { color: c.orange, fontFamily: 'Inter_500Medium' },
+                        { color: c.text2, fontFamily: 'Inter_400Regular' },
                       ]}
                     >
                       Due {record.due_date}
@@ -299,18 +300,14 @@ export function RecordCard({
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    borderRadius: 18,
+    borderRadius: 14,
     borderWidth: 1,
     marginBottom: 10,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 9,
-    elevation: 1,
+
     overflow: 'hidden',
   },
   accent: { width: 4 },
-  body: { flex: 1, padding: 14, gap: 6 },
+  body: { flex: 1, padding: 16, gap: 8 },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -328,7 +325,7 @@ const styles = StyleSheet.create({
   amount: { fontSize: 18 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   typeTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
-  typeText: { fontSize: 10, letterSpacing: 0.5 },
+  typeText: { fontSize: 11, letterSpacing: 0 },
   date: { fontSize: 12 },
   note: { fontSize: 13, lineHeight: 18 },
   badge: {
@@ -337,7 +334,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
   },
-  badgeText: { fontSize: 9, letterSpacing: 0.5 },
+  badgeText: { fontSize: 11, letterSpacing: 0 },
   progressSection: { gap: 4 },
   progressRow: { flexDirection: 'row', justifyContent: 'space-between' },
   progressLabel: { fontSize: 11 },
@@ -356,7 +353,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
     paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingVertical: 8,
   },
   actionText: { fontSize: 12 },
 });

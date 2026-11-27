@@ -171,7 +171,7 @@ export default function HomeScreen() {
         <View
           style={[
             styles.heroCard,
-            { backgroundColor: c.greenCard, borderColor: c.border },
+            { backgroundColor: c.card, borderColor: c.border },
           ]}
         >
           <Text
@@ -180,7 +180,7 @@ export default function HomeScreen() {
               { color: c.primary, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
-            NET BALANCE
+            Net balance
           </Text>
           <Text
             style={[
@@ -223,7 +223,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Quick Actions */}
+        {/* Quick actions */}
         <Text
           style={[
             styles.sectionTitle,
@@ -237,29 +237,29 @@ export default function HomeScreen() {
             {
               icon: 'arrow-up-right',
               label: 'Lent',
-              color: c.primary,
-              bg: c.primary + '20',
+              color: c.text2,
+              bg: c.card2,
               action: () => openAdd('lent'),
             },
             {
               icon: 'arrow-down-left',
               label: 'Borrowed',
-              color: c.danger,
-              bg: c.danger + '20',
+              color: c.text2,
+              bg: c.card2,
               action: () => openAdd('borrowed'),
             },
             {
               icon: 'list',
               label: 'History',
-              color: c.blue,
-              bg: c.blue + '20',
+              color: c.text2,
+              bg: c.card2,
               action: () => router.push('/records'),
             },
             {
               icon: 'users',
               label: 'People',
-              color: c.orange,
-              bg: c.orange + '20',
+              color: c.text2,
+              bg: c.card2,
               action: () => router.push('/people'),
             },
           ].map((item, i) => (
@@ -293,25 +293,25 @@ export default function HomeScreen() {
         <View style={styles.statsGrid}>
           <View style={styles.statsRow}>
             <StatCard
-              title="TOTAL LENT"
+              title="Total lent"
               value={fmt(summary.totalLent, currency)}
               color={c.primary}
             />
             <StatCard
-              title="TOTAL BORROWED"
+              title="Total borrowed"
               value={fmt(summary.totalBorrowed, currency)}
               color={c.danger}
             />
           </View>
           <View style={styles.statsRow}>
             <StatCard
-              title="RECEIVABLE"
+              title="To receive"
               value={fmt(summary.pendingReceivable, currency)}
               color={c.blue}
               subtitle="pending"
             />
             <StatCard
-              title="PAYABLE"
+              title="To repay"
               value={fmt(summary.pendingPayable, currency)}
               color={c.orange}
               subtitle="pending"
@@ -319,7 +319,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Recent Activity */}
+        {/* Recent activity */}
         <Text
           style={[
             styles.sectionTitle,
@@ -490,7 +490,7 @@ function getGreeting() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { paddingHorizontal: 16, gap: 14 },
+  content: { paddingHorizontal: 20, gap: 16 },
   topBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -509,14 +509,14 @@ const styles = StyleSheet.create({
   profileImg: { width: 38, height: 38, borderRadius: 19 },
   profileInitial: { fontSize: 17 },
   heroCard: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
-    padding: 24,
+    padding: 22,
     gap: 6,
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
-  heroLabel: { fontSize: 12, letterSpacing: 1 },
-  heroAmount: { fontSize: 48 },
+  heroLabel: { fontSize: 13, letterSpacing: 0 },
+  heroAmount: { fontSize: 42, fontVariant: ['tabular-nums'] },
   heroSub: { fontSize: 14 },
   heroDivider: { width: '100%', height: 1, marginVertical: 8 },
   heroFooter: {
@@ -526,19 +526,19 @@ const styles = StyleSheet.create({
   },
   heroFooterText: { fontSize: 13 },
   sectionTitle: { fontSize: 18, marginTop: 4 },
-  quickActions: { flexDirection: 'row', gap: 10 },
+  quickActions: { flexDirection: 'row', gap: 8 },
   quickTile: {
     flex: 1,
     alignItems: 'center',
-    padding: 14,
-    borderRadius: 16,
+    padding: 10,
+    borderRadius: 12,
     borderWidth: 1,
     gap: 8,
   },
   quickIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },

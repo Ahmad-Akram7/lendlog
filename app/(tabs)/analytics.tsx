@@ -55,24 +55,24 @@ export default function AnalyticsScreen() {
       {/* Overview stats */}
       <View style={styles.statsRow}>
         <StatCard
-          title="TOTAL LENT"
+          title="Total lent"
           value={fmt(summary.totalLent, currency)}
           color={c.primary}
         />
         <StatCard
-          title="TOTAL BORROWED"
+          title="Total borrowed"
           value={fmt(summary.totalBorrowed, currency)}
           color={c.danger}
         />
       </View>
       <View style={styles.statsRow}>
         <StatCard
-          title="RECEIVABLE"
+          title="To receive"
           value={fmt(summary.pendingReceivable, currency)}
           color={c.blue}
         />
         <StatCard
-          title="PAYABLE"
+          title="To repay"
           value={fmt(summary.pendingPayable, currency)}
           color={c.orange}
         />
@@ -92,7 +92,7 @@ export default function AnalyticsScreen() {
               { color: c.text, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
-            Settlement Rate
+            Settlement rate
           </Text>
           <Text
             style={[
@@ -143,7 +143,7 @@ export default function AnalyticsScreen() {
               { color: c.text, fontFamily: 'Inter_700Bold' },
             ]}
           >
-            Top Debtors
+            Largest receivables
           </Text>
           <Text
             style={[
@@ -213,7 +213,7 @@ export default function AnalyticsScreen() {
               { color: c.text, fontFamily: 'Inter_700Bold' },
             ]}
           >
-            Top Creditors
+            Largest payables
           </Text>
           <Text
             style={[
@@ -301,7 +301,7 @@ export default function AnalyticsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { paddingHorizontal: 16, gap: 14 },
+  content: { paddingHorizontal: 20, gap: 16 },
   title: { fontSize: 28 },
   statsRow: { flexDirection: 'row', gap: 10 },
   settlementCard: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 10 },
