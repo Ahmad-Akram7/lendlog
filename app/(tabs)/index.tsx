@@ -132,7 +132,7 @@ export default function HomeScreen() {
           <Text
             style={[
               styles.appTitle,
-              { color: c.text, fontFamily: 'Inter_700Bold' },
+              { color: c.text, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             LendLog
@@ -158,7 +158,7 @@ export default function HomeScreen() {
               <Text
                 style={[
                   styles.profileInitial,
-                  { color: c.primary, fontFamily: 'Inter_700Bold' },
+                  { color: c.primary, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {settings.profileName.charAt(0).toUpperCase()}
@@ -185,7 +185,7 @@ export default function HomeScreen() {
           <Text
             style={[
               styles.heroAmount,
-              { color: netColor, fontFamily: 'Inter_700Bold' },
+              { color: netColor, fontFamily: 'Inter_600SemiBold' },
             ]}
           >
             {summary.netBalance === 0
@@ -227,7 +227,7 @@ export default function HomeScreen() {
         <Text
           style={[
             styles.sectionTitle,
-            { color: c.text, fontFamily: 'Inter_700Bold' },
+            { color: c.text, fontFamily: 'Inter_600SemiBold' },
           ]}
         >
           Quick Actions
@@ -251,15 +251,15 @@ export default function HomeScreen() {
             {
               icon: 'list',
               label: 'History',
-              color: c.blue,
-              bg: c.blue + '20',
+              color: c.text2,
+              bg: c.card2,
               action: () => router.push('/records'),
             },
             {
               icon: 'users',
               label: 'People',
-              color: c.orange,
-              bg: c.orange + '20',
+              color: c.text2,
+              bg: c.card2,
               action: () => router.push('/people'),
             },
           ].map((item, i) => (
@@ -293,25 +293,25 @@ export default function HomeScreen() {
         <View style={styles.statsGrid}>
           <View style={styles.statsRow}>
             <StatCard
-              title="TOTAL LENT"
+              title="Lent overall"
               value={fmt(summary.totalLent, currency)}
               color={c.primary}
             />
             <StatCard
-              title="TOTAL BORROWED"
+              title="Borrowed overall"
               value={fmt(summary.totalBorrowed, currency)}
               color={c.danger}
             />
           </View>
           <View style={styles.statsRow}>
             <StatCard
-              title="RECEIVABLE"
+              title="To receive"
               value={fmt(summary.pendingReceivable, currency)}
               color={c.blue}
               subtitle="pending"
             />
             <StatCard
-              title="PAYABLE"
+              title="To repay"
               value={fmt(summary.pendingPayable, currency)}
               color={c.orange}
               subtitle="pending"
@@ -323,7 +323,7 @@ export default function HomeScreen() {
         <Text
           style={[
             styles.sectionTitle,
-            { color: c.text, fontFamily: 'Inter_700Bold' },
+            { color: c.text, fontFamily: 'Inter_600SemiBold' },
           ]}
         >
           Recent Activity
@@ -410,7 +410,7 @@ export default function HomeScreen() {
           setShowFabMenu(true);
         }}
       >
-        <Feather name="plus" size={26} color="#000" />
+        <Feather name="plus" size={26} color={c.primaryForeground} />
       </TouchableOpacity>
 
       {/* FAB Menu Modal */}
@@ -442,7 +442,7 @@ export default function HomeScreen() {
               <Text
                 style={[
                   styles.fabMenuText,
-                  { color: '#000', fontFamily: 'Inter_700Bold' },
+                  { color: c.primaryForeground, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 I Lent Money
@@ -456,7 +456,7 @@ export default function HomeScreen() {
               <Text
                 style={[
                   styles.fabMenuText,
-                  { color: '#fff', fontFamily: 'Inter_700Bold' },
+                  { color: '#fff', fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 I Borrowed Money
@@ -509,14 +509,14 @@ const styles = StyleSheet.create({
   profileImg: { width: 38, height: 38, borderRadius: 19 },
   profileInitial: { fontSize: 17 },
   heroCard: {
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
     padding: 24,
-    gap: 6,
-    alignItems: 'center',
+    gap: 8,
+    alignItems: 'flex-start',
   },
-  heroLabel: { fontSize: 12, letterSpacing: 1 },
-  heroAmount: { fontSize: 48 },
+  heroLabel: { fontSize: 12 },
+  heroAmount: { fontSize: 42, fontVariant: ['tabular-nums'] },
   heroSub: { fontSize: 14 },
   heroDivider: { width: '100%', height: 1, marginVertical: 8 },
   heroFooter: {
@@ -525,15 +525,17 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   heroFooterText: { fontSize: 13 },
-  sectionTitle: { fontSize: 18, marginTop: 4 },
+  sectionTitle: { fontSize: 18, marginTop: 8 },
   quickActions: { flexDirection: 'row', gap: 10 },
   quickTile: {
     flex: 1,
     alignItems: 'center',
-    padding: 14,
-    borderRadius: 16,
+    padding: 12,
+    borderRadius: 14,
     borderWidth: 1,
     gap: 8,
+    minHeight: 92,
+    justifyContent: 'center',
   },
   quickIcon: {
     width: 44,
@@ -572,11 +574,7 @@ const styles = StyleSheet.create({
     borderRadius: 29,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    elevation: 3,
   },
   fabOverlay: { flex: 1, justifyContent: 'flex-end' },
   fabMenu: {
