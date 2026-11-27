@@ -3,7 +3,6 @@ import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
-  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -57,7 +56,6 @@ export function RecordCard({
   const ActionBtn = ({
     icon,
     label,
-    color,
     onPress,
   }: {
     icon: string;
@@ -118,8 +116,7 @@ export function RecordCard({
 
   return (
     <Animated.View style={{ opacity: fadeAnim }}>
-      <Pressable style={({ pressed }) => ({ opacity: pressed ? 0.92 : 1 })}>
-        <View
+      <View
           style={[
             styles.card,
             { backgroundColor: c.card, borderColor: c.border },
@@ -154,7 +151,7 @@ export function RecordCard({
                         { color: c.primary, fontFamily: 'Inter_600SemiBold' },
                       ]}
                     >
-                      SETTLED
+                      Settled
                     </Text>
                   </View>
                 )}
@@ -182,7 +179,7 @@ export function RecordCard({
               <Text
                 style={[
                   styles.amount,
-                  { color: accentColor, fontFamily: 'Inter_700Bold' },
+                  { color: c.text, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {fmt(record.amount, currency)}
@@ -294,8 +291,7 @@ export function RecordCard({
               )}
             </View>
           </View>
-        </View>
-      </Pressable>
+      </View>
     </Animated.View>
   );
 }
@@ -327,7 +323,7 @@ const styles = StyleSheet.create({
   amount: { fontSize: 18 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   typeTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4 },
-  typeText: { fontSize: 10, letterSpacing: 0.5 },
+  typeText: { fontSize: 12 },
   date: { fontSize: 12 },
   note: { fontSize: 13, lineHeight: 18 },
   badge: {
@@ -336,7 +332,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
   },
-  badgeText: { fontSize: 9, letterSpacing: 0.5 },
+  badgeText: { fontSize: 11 },
   progressSection: { gap: 4 },
   progressRow: { flexDirection: 'row', justifyContent: 'space-between' },
   progressLabel: { fontSize: 11 },
