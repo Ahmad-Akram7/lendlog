@@ -92,15 +92,10 @@ export function BarChart({ data }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 18,
+    borderRadius: 14,
     borderWidth: 1,
     padding: 16,
     gap: 12,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.035,
-    shadowRadius: 8,
-    elevation: 1,
   },
   title: { fontSize: 15 },
   legend: { flexDirection: 'row', gap: 16 },
@@ -111,6 +106,6 @@ const styles = StyleSheet.create({
   group: { flex: 1, alignItems: 'center', gap: 4 },
   bars: { flexDirection: 'row', gap: 2, alignItems: 'flex-end', height: 100 },
   barWrapper: { width: 10, height: 100, justifyContent: 'flex-end' },
-  bar: { borderRadius: 3 },
+  bar: { borderTopLeftRadius: 3, borderTopRightRadius: 3 },
   label: { fontSize: 10, textAlign: 'center' },
 });
