@@ -9,9 +9,15 @@ interface Props {
   subtitle?: string;
 }
 
-export function StatCard({ title, value, color, subtitle }: Props) {
+function sentenceCase(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+export function StatCard({ title, value, subtitle }: Props) {
   const c = useColors();
-  const valueColor = color ?? c.text;
+
   return (
     <View
       style={[styles.card, { backgroundColor: c.card, borderColor: c.border }]}
@@ -19,15 +25,15 @@ export function StatCard({ title, value, color, subtitle }: Props) {
       <Text
         style={[
           styles.title,
-          { color: c.text3, fontFamily: 'Inter_500Medium' },
+          { color: c.text2, fontFamily: 'Inter_500Medium' },
         ]}
       >
-        {title}
+        {sentenceCase(title)}
       </Text>
       <Text
         style={[
           styles.value,
-          { color: valueColor, fontFamily: 'Inter_700Bold' },
+          { color: c.text, fontFamily: 'Inter_600SemiBold' },
         ]}
         numberOfLines={1}
         adjustsFontSizeToFit
@@ -51,18 +57,13 @@ export function StatCard({ title, value, color, subtitle }: Props) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    padding: 14,
-    borderRadius: 16,
+    padding: 16,
+    borderRadius: 14,
     borderWidth: 1,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.035,
-    shadowRadius: 8,
-    elevation: 1,
-    gap: 4,
+    gap: 6,
     minWidth: 0,
   },
-  title: { fontSize: 11, letterSpacing: 0.5 },
-  value: { fontSize: 20 },
-  subtitle: { fontSize: 11 },
+  title: { fontSize: 12, lineHeight: 16 },
+  value: { fontSize: 22, fontVariant: ['tabular-nums'] },
+  subtitle: { fontSize: 12 },
 });
