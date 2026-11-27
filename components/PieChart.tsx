@@ -80,7 +80,7 @@ export function PieChart({ lent, borrowed, currency }: Props) {
               <Text
                 style={[
                   styles.legendValue,
-                  { color: c.primary, fontFamily: 'Inter_700Bold' },
+                  { color: c.primary, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {currency}
@@ -110,7 +110,7 @@ export function PieChart({ lent, borrowed, currency }: Props) {
               <Text
                 style={[
                   styles.legendValue,
-                  { color: c.danger, fontFamily: 'Inter_700Bold' },
+                  { color: c.danger, fontFamily: 'Inter_600SemiBold' },
                 ]}
               >
                 {currency}
@@ -133,7 +133,7 @@ export function PieChart({ lent, borrowed, currency }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { borderRadius: 16, borderWidth: 1, padding: 16, gap: 16 },
+  container: { borderRadius: 14, borderWidth: 1, padding: 16, gap: 16 },
   title: { fontSize: 15 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 20 },
   visual: { flex: 1 },
