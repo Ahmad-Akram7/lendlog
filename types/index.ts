@@ -3,6 +3,8 @@ export interface Payment {
   amount: number;
   date: string;
   note: string;
+  /** Identifies a non-cash adjustment created by manual settlement. */
+  kind?: 'settlement';
 }
 
 export interface Record {
