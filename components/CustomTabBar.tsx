@@ -1,7 +1,13 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColors } from '@/hooks/useColors';
 
@@ -30,7 +36,10 @@ export function CustomTabBar({ state, navigation }: Props) {
         {
           backgroundColor: c.background,
           borderTopColor: c.border,
-          paddingBottom: Math.max(insets.bottom, Platform.OS === 'web' ? 8 : 6),
+          paddingBottom: Math.max(
+            insets.bottom,
+            Platform.OS === 'web' ? 8 : 6,
+          ),
         },
       ]}
     >
@@ -65,7 +74,9 @@ export function CustomTabBar({ state, navigation }: Props) {
                   styles.label,
                   {
                     color: isActive ? c.text : c.text3,
-                    fontFamily: isActive ? 'Inter_600SemiBold' : 'Inter_500Medium',
+                    fontFamily: isActive
+                      ? 'Inter_600SemiBold'
+                      : 'Inter_500Medium',
                   },
                 ]}
               >
